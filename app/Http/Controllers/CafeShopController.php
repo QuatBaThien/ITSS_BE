@@ -74,6 +74,7 @@ class CafeShopController extends Controller
             'max_seat' => $request->max_seat,
             'curr_seat' => $request->curr_seat,
             'user_id' => $userid,
+            'seat_diff' => $request->max_seat
 
         ];
         $newShop = CafeShop::create($dataInsert);
@@ -185,7 +186,8 @@ class CafeShopController extends Controller
             'air_conditioner' => $request->air_conditioner,
             'max_seat' => $request->max_seat,
             'curr_seat' => $request->curr_seat,
-            'user_id' => $userid
+            'user_id' => $userid,
+            'seat_diff' => $request->max_seat - $request->curr_seat
         ];
         // echo $dataInsert['photoURL'];
         $shoptUpdate->update($dataInsert);
@@ -256,6 +258,7 @@ class CafeShopController extends Controller
                     ['name', 'like', "%$keyword->name%"],
                     ['air_conditioner', '=', $keyword->air_conditioner],
                     ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )
             ->where('seat_diff', '>=', 0)
@@ -275,6 +278,7 @@ class CafeShopController extends Controller
                     ['name', 'like', "%$keyword->name%"],
                     ['air_conditioner', '=', $keyword->air_conditioner],
                     ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )
             ->where('seat_diff', '>=', 0)
@@ -290,6 +294,7 @@ class CafeShopController extends Controller
                 [
                     ['name', 'like', "%$keyword->name%"],
                     ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )
             ->where('seat_diff', '>=', 0)
@@ -306,7 +311,8 @@ class CafeShopController extends Controller
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
-                    ['approve', '=', '1']
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )
             ->where('seat_diff', '>=', 0)
