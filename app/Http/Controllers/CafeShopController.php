@@ -250,11 +250,13 @@ class CafeShopController extends Controller
     public function haveAirNoStar($keyword)
     {
         $shops = DB::table('cafe_shops')
+        -> selectRaw('(`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
                     ['air_conditioner', '=', $keyword->air_conditioner],
-                    ['approve', '=', '1']
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )->paginate(3);
         return $shops;
@@ -264,14 +266,15 @@ class CafeShopController extends Controller
 
         $shops = DB::table('rates')
             ->Join('cafe_shops', 'cafe_shops.id', '=', 'rates.cafeShop_id')
-            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`, ROUND(AVG(`rates`.`star`) ,1) AS `star`')
+            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`, ROUND(AVG(`rates`.`star`) ,1) AS `star`, (`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
             ->groupByRaw('cafeShop_id')
             ->having('star', '>=', $keyword->star)
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
                     ['air_conditioner', '=', $keyword->air_conditioner],
-                    ['approve', '=', '1']
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )
             ->paginate(3);
@@ -281,10 +284,12 @@ class CafeShopController extends Controller
     public function nullAirNoStar($keyword)
     {
         $shops = DB::table('cafe_shops')
+        ->select('(`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
-                    ['approve', '=', '1']
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )->paginate(3);
         return $shops;
@@ -293,13 +298,14 @@ class CafeShopController extends Controller
     {
         $shops = DB::table('rates')
             ->Join('cafe_shops', 'cafe_shops.id', '=', 'rates.cafeShop_id')
-            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`,ROUND(AVG(`rates`.`star`) ,1) AS `star`')
+            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`,ROUND(AVG(`rates`.`star`) ,1) AS `star`, (`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
             ->groupByRaw('cafeShop_id')
             ->having('star', '>=', $keyword->star)
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
-                    ['approve', '=', '1']
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )->paginate(3);
         return $shops;
