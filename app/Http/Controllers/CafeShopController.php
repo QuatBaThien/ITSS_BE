@@ -256,9 +256,10 @@ class CafeShopController extends Controller
                     ['name', 'like', "%$keyword->name%"],
                     ['air_conditioner', '=', $keyword->air_conditioner],
                     ['approve', '=', '1'],
-                    ['seat_diff', '>=', $keyword->seat]
                 ]
-            )->paginate(3);
+            )
+            ->where('seat_diff', '>=', 0)
+            ->paginate(3);
         return $shops;
     }
     public function haveAirHaveStar($keyword)
@@ -274,9 +275,9 @@ class CafeShopController extends Controller
                     ['name', 'like', "%$keyword->name%"],
                     ['air_conditioner', '=', $keyword->air_conditioner],
                     ['approve', '=', '1'],
-                    ['seat_diff', '>=', $keyword->seat]
                 ]
             )
+            ->where('seat_diff', '>=', 0)
             ->paginate(3);
 
         return $shops;
@@ -289,9 +290,10 @@ class CafeShopController extends Controller
                 [
                     ['name', 'like', "%$keyword->name%"],
                     ['approve', '=', '1'],
-                    ['seat_diff', '>=', $keyword->seat]
                 ]
-            )->paginate(3);
+            )
+            ->where('seat_diff', '>=', 0)
+            ->paginate(3);
         return $shops;
     }
     public function nullAirHaveStar($keyword)
@@ -304,10 +306,11 @@ class CafeShopController extends Controller
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
-                    ['approve', '=', '1'],
-                    ['seat_diff', '>=', $keyword->seat]
+                    ['approve', '=', '1']
                 ]
-            )->paginate(3);
+            )
+            ->where('seat_diff', '>=', 0)
+            ->paginate(3);
         return $shops;
     }
     public function testDate($time1, $time2)
