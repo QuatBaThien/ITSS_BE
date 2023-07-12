@@ -25,8 +25,14 @@ class CafeShop extends Model
         'user_id',
         'star',
         'isOpen',
-        'approve'
+        'approve',
+        'curr_seat',
+        'max_seat'
     ];
     public $timestamps = false;
+
+    protected $attributes = [
+        'curr_seat' => 0,
+    ];
 
 }
