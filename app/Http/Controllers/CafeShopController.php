@@ -261,7 +261,6 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
-            ->where('seat_diff', '>=', 0)
             ->paginate(3);
         return $shops;
     }
@@ -281,7 +280,6 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
-            ->where('seat_diff', '>=', 0)
             ->paginate(3);
 
         return $shops;
@@ -297,7 +295,6 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
-            ->where('seat_diff', '>=', 0)
             ->paginate(3);
         return $shops;
     }
@@ -315,7 +312,6 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
-            ->where('seat_diff', '>=', 0)
             ->paginate(3);
         return $shops;
     }
