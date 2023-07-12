@@ -55,7 +55,8 @@ class CafeShopController extends Controller
             'time_open' => 'required|string',
             'time_close' => 'required|string',
             'air_conditioner' => 'required|between:0,1',
-            'photoUrl' => 'required'
+            'photoUrl' => 'required',
+            'max_seat' => 'required|integer',
         );
         $validator =  Validator::make($request->all(), $rule);
         if ($validator->fails()) {
@@ -70,6 +71,8 @@ class CafeShopController extends Controller
             'time_open' => $request->time_open,
             'time_close' => $request->time_close,
             'air_conditioner' => $request->air_conditioner,
+            'max_seat' => $request->max_seat,
+            'curr_seat' => $request->curr_seat,
             'user_id' => $userid,
 
         ];
@@ -180,7 +183,9 @@ class CafeShopController extends Controller
             'time_open' => $request->time_open,
             'time_close' => $request->time_close,
             'air_conditioner' => $request->air_conditioner,
-            'user_id' => $userid,
+            'max_seat' => $request->max_seat,
+            'curr_seat' => $request->curr_seat,
+            'user_id' => $userid
         ];
         // echo $dataInsert['photoURL'];
         $shoptUpdate->update($dataInsert);
