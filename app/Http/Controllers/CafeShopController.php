@@ -252,23 +252,18 @@ class CafeShopController extends Controller
     public function haveAirNoStar($keyword)
     {
         $shops = DB::table('cafe_shops')
-            ->where(
-                [
-                    ['name', 'like', "%$keyword->name%"],
-                    ['air_conditioner', '=', $keyword->air_conditioner],
-                    ['approve', '=', '1'],
-                    ['seat_diff', '>=', $keyword->seat]
-                ]
-            )
-            ->orWhere(
-                [
-                    ['address', 'like', "%$keyword->name%"],
-                    ['air_conditioner', '=', $keyword->air_conditioner],
-                    ['approve', '=', '1'],
-                    ['seat_diff', '>=', $keyword->seat]
-            ])
-            ->paginate(3);
-        return $shops;
+    ->where(function ($query) use ($keyword) {
+        $query->where('name', 'like', "%$keyword->name%")
+            ->orWhere('address', 'like', "%$keyword->name%");
+    })
+    ->where([
+        ['air_conditioner', '=', $keyword->air_conditioner],
+        ['approve', '=', '1'],
+        ['seat_diff', '>=', $keyword->seat]
+    ])
+    ->paginate(3);
+
+return $shops;
     }
     public function haveAirHaveStar($keyword)
     {
