@@ -260,6 +260,13 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
+            ->orWhere(
+                [
+                    ['address', 'like', "%$keyword->name%"],
+                    ['air_conditioner', '=', $keyword->air_conditioner],
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
+            ])
             ->paginate(3);
         return $shops;
     }
@@ -279,6 +286,13 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
+            ->orWhere(
+                [
+                    ['address', 'like', "%$keyword->name%"],
+                    ['air_conditioner', '=', $keyword->air_conditioner],
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
+            ])
             ->paginate(3);
 
         return $shops;
@@ -293,6 +307,13 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
+            ->orWhere(
+                [
+                    ['address', 'like', "%$keyword->name%"],
+                    ['air_conditioner', '=', $keyword->air_conditioner],
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
+            ])
             ->paginate(3);
         return $shops;
     }
@@ -310,6 +331,13 @@ class CafeShopController extends Controller
                     ['seat_diff', '>=', $keyword->seat]
                 ]
             )
+            ->orWhere(
+                [
+                    ['address', 'like', "%$keyword->name%"],
+                    ['air_conditioner', '=', $keyword->air_conditioner],
+                    ['approve', '=', '1'],
+                    ['seat_diff', '>=', $keyword->seat]
+            ])
             ->paginate(3);
         return $shops;
     }
