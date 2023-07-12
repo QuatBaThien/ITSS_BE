@@ -294,7 +294,6 @@ return $shops;
                 ->orWhere('address', 'like', "%$keyword->name%");
         })
         ->where([
-            ['air_conditioner', '=', $keyword->air_conditioner],
             ['approve', '=', '1'],
             ['seat_diff', '>=', $keyword->seat]
         ])
@@ -313,7 +312,6 @@ return $shops;
                     ->orWhere('address', 'like', "%$keyword->name%");
             })
             ->where([
-                ['air_conditioner', '=', $keyword->air_conditioner],
                 ['approve', '=', '1'],
                 ['seat_diff', '>=', $keyword->seat]
             ])
