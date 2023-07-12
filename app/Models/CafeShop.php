@@ -27,7 +27,8 @@ class CafeShop extends Model
         'isOpen',
         'approve',
         'curr_seat',
-        'max_seat'
+        'max_seat',
+        'seat_diff'
     ];
     public $timestamps = false;
 

@@ -74,6 +74,7 @@ class CafeShopController extends Controller
             'max_seat' => $request->max_seat,
             'curr_seat' => $request->curr_seat,
             'user_id' => $userid,
+            'seat_diff' => $request->max_seat
 
         ];
         $newShop = CafeShop::create($dataInsert);
@@ -185,7 +186,8 @@ class CafeShopController extends Controller
             'air_conditioner' => $request->air_conditioner,
             'max_seat' => $request->max_seat,
             'curr_seat' => $request->curr_seat,
-            'user_id' => $userid
+            'user_id' => $userid,
+            'seat_diff' => $request->max_seat - $request->curr_seat
         ];
         // echo $dataInsert['photoURL'];
         $shoptUpdate->update($dataInsert);
@@ -250,14 +252,18 @@ class CafeShopController extends Controller
     public function haveAirNoStar($keyword)
     {
         $shops = DB::table('cafe_shops')
-            ->where(
-                [
-                    ['name', 'like', "%$keyword->name%"],
-                    ['air_conditioner', '=', $keyword->air_conditioner],
-                    ['approve', '=', '1']
-                ]
-            )->paginate(3);
-        return $shops;
+    ->where(function ($query) use ($keyword) {
+        $query->where('name', 'like', "%$keyword->name%")
+            ->orWhere('address', 'like', "%$keyword->name%");
+    })
+    ->where([
+        ['air_conditioner', '=', $keyword->air_conditioner],
+        ['approve', '=', '1'],
+        ['seat_diff', '>=', $keyword->seat]
+    ])
+    ->paginate(3);
+
+return $shops;
     }
     public function haveAirHaveStar($keyword)
     {
@@ -267,13 +273,15 @@ class CafeShopController extends Controller
             ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`, ROUND(AVG(`rates`.`star`) ,1) AS `star`')
             ->groupByRaw('cafeShop_id')
             ->having('star', '>=', $keyword->star)
-            ->where(
-                [
-                    ['name', 'like', "%$keyword->name%"],
-                    ['air_conditioner', '=', $keyword->air_conditioner],
-                    ['approve', '=', '1']
-                ]
-            )
+            ->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', "%$keyword->name%")
+                    ->orWhere('address', 'like', "%$keyword->name%");
+            })
+            ->where([
+                ['air_conditioner', '=', $keyword->air_conditioner],
+                ['approve', '=', '1'],
+                ['seat_diff', '>=', $keyword->seat]
+            ])
             ->paginate(3);
 
         return $shops;
@@ -281,12 +289,15 @@ class CafeShopController extends Controller
     public function nullAirNoStar($keyword)
     {
         $shops = DB::table('cafe_shops')
-            ->where(
-                [
-                    ['name', 'like', "%$keyword->name%"],
-                    ['approve', '=', '1']
-                ]
-            )->paginate(3);
+        ->where(function ($query) use ($keyword) {
+            $query->where('name', 'like', "%$keyword->name%")
+                ->orWhere('address', 'like', "%$keyword->name%");
+        })
+        ->where([
+            ['approve', '=', '1'],
+            ['seat_diff', '>=', $keyword->seat]
+        ])
+            ->paginate(3);
         return $shops;
     }
     public function nullAirHaveStar($keyword)
@@ -296,12 +307,15 @@ class CafeShopController extends Controller
             ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`,ROUND(AVG(`rates`.`star`) ,1) AS `star`')
             ->groupByRaw('cafeShop_id')
             ->having('star', '>=', $keyword->star)
-            ->where(
-                [
-                    ['name', 'like', "%$keyword->name%"],
-                    ['approve', '=', '1']
-                ]
-            )->paginate(3);
+            ->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', "%$keyword->name%")
+                    ->orWhere('address', 'like', "%$keyword->name%");
+            })
+            ->where([
+                ['approve', '=', '1'],
+                ['seat_diff', '>=', $keyword->seat]
+            ])
+            ->paginate(3);
         return $shops;
     }
     public function testDate($time1, $time2)
