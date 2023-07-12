@@ -252,7 +252,6 @@ class CafeShopController extends Controller
     public function haveAirNoStar($keyword)
     {
         $shops = DB::table('cafe_shops')
-        -> selectRaw('(`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
@@ -269,7 +268,7 @@ class CafeShopController extends Controller
 
         $shops = DB::table('rates')
             ->Join('cafe_shops', 'cafe_shops.id', '=', 'rates.cafeShop_id')
-            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`, ROUND(AVG(`rates`.`star`) ,1) AS `star`, (`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
+            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`, ROUND(AVG(`rates`.`star`) ,1) AS `star`')
             ->groupByRaw('cafeShop_id')
             ->having('star', '>=', $keyword->star)
             ->where(
@@ -287,7 +286,6 @@ class CafeShopController extends Controller
     public function nullAirNoStar($keyword)
     {
         $shops = DB::table('cafe_shops')
-        ->select('(`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
             ->where(
                 [
                     ['name', 'like', "%$keyword->name%"],
@@ -302,7 +300,7 @@ class CafeShopController extends Controller
     {
         $shops = DB::table('rates')
             ->Join('cafe_shops', 'cafe_shops.id', '=', 'rates.cafeShop_id')
-            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`,ROUND(AVG(`rates`.`star`) ,1) AS `star`, (`cafe_shops`.`max_seat` - `cafe_shops`.`curr_seat`) AS `seat_diff`')
+            ->selectRaw('`cafe_shops`.*, `rates`.`cafeShop_id`,ROUND(AVG(`rates`.`star`) ,1) AS `star`')
             ->groupByRaw('cafeShop_id')
             ->having('star', '>=', $keyword->star)
             ->where(
